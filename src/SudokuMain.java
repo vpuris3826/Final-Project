@@ -13,25 +13,35 @@ public class SudokuMain {
     //int i;
     //int arr[] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-    System.out.println("asdfghjkl");
+    public void RunRunRun(){
 
-    public int RandGen()
-    {
-        int pick = (int) (Math.random() * 9);
-        return pick;
+        //MakeBoxOneOne();
+
     }
 
-    public void MakeBoxOneOne(String[] args, int pick)
+    /*public int[] RandGen()
+    {
+        int pick = (int) (Math.random() * 9);
+        int newArray[] = MakeBoxOneOne(pick);
+        return newArray[];
+    }*/
+
+    public void MakeBoxOneOne()
     {
         int arr[] = new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9};
+        int j = (int) (Math.random() * (arr.length + 1));
         int newArr[] = new int[arr.length - 1];
-        int j = pick;
+        int appArray[] = {};
         for(int i = 0, k = 0; i < arr.length; i++){
+
             if(i!=j){
                 newArr[k] = arr[i];
                 k++;
             }
         }
+        System.out.println("Before: " + Arrays.toString(arr));
+        System.out.println("After: " + Arrays.toString(newArr));
+        System.out.println("New array: ");
     }
 
 }
