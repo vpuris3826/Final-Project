@@ -3,7 +3,7 @@ import java.util.Arrays;
 
 public class SudokuMain {
     public static void main(String[] args) {
-
+        new SudokuMain();
     }
 
     //int difficulty; // if difficulty = 1, blank boxes = ...
