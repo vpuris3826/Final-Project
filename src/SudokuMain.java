@@ -32,7 +32,7 @@ public class SudokuMain {
         return appArr;
     }
 
-    public Integer[] makeLine(int [] array) {
+    public Integer[] makeLine(int [] array, Integer[] append) {
         System.out.println("check");
         int arr[] = array;
         int j = (int) (Math.random() * (arr.length));
@@ -45,11 +45,11 @@ public class SudokuMain {
             }
         }
         int appadd = arr[j];
-        appArr = addX(n, appArr, appadd);
+        append = addX(n, appArr, appadd);
         System.out.println("addX result: " + Arrays.toString(appArr));
         System.out.println("Before: " + Arrays.toString(arr));
         System.out.println("After (short array): " + Arrays.toString(newArr));
-        return appArr;
+        return append;
     }
 
     /*public Integer[] makeLine2(int [] array) {
