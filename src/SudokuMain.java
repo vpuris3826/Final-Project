@@ -7,11 +7,11 @@ public class SudokuMain {
 
     public SudokuMain() {
         System.out.println("Cell 1x1");
-        cellMaker(cell1x1);
+        cellMakerDiagonal(cell1x1);
         System.out.println("Cell 2x2");
-        cellMaker(cell2x2);
+        cellMakerDiagonal(cell2x2);
         System.out.println("Cell 3x3");
-        cellMaker(cell3x3);
+        cellMakerDiagonal(cell3x3);
         System.out.println("base test");
         basemaker(base, cell1x1, cell2x2, cell3x3);
     }
@@ -45,7 +45,7 @@ public class SudokuMain {
         return cellZ;
     }
 
-    public int [][] cellMaker(int [][] cellY){
+    public int [][] cellMakerDiagonal(int [][] cellY){
         int sum = cellSum(cellY);
         int n = 1;
         while (sum != 45) {
@@ -68,33 +68,36 @@ public class SudokuMain {
                 appendCell(r, c, n, base);
             }
         }
-        for(int rc = 0; rc < 3; rc++){
-            int r = 3;
-            int c = 3;
-            for(int cc = 0; cc < 3; cc++){
+        for(int r = 3, rc = 0; r < 6 && rc < 3; r++, rc++){
+            for(int c = 3, cc = 0; c < 6 && cc < 3; c++, cc++){
                 int n = cell2x2[rc][cc];
                 appendCell(r, c, n, base);
-                System.out.println("rc: " + rc + "cc: " + cc);
             }
-            r++;
-            c++;
         }
-        for(int r = 6; r < 9; r++){
-            for(int c = 6; c < 9; c++){
-                if(base[r][c] == 0){
-                    for(int rc = 0; rc < 3; rc++){
-                        for(int cc = 0; cc < 3; cc++){
-                            if(base[r][c] == 0){
-                                int n = cell3x3[rc][cc];
-                                appendCell(r, c, n, base);
-                            }
-                        }
-                    }
-                }
+        for(int r = 6, rc = 0; r < 9 && rc < 3; r++, rc++){
+            for(int c = 6, cc = 0; c < 9 && cc < 3; c++, cc++){
+                int n = cell3x3[rc][cc];
+                appendCell(r, c, n, base);
             }
         }
         printer(base);
         return base;
+    }
+
+    public int [][] cellMaker1x3(int [][] cellY){
+        int sum = cellSum(cellY);
+        int n = 1;
+        while (sum != 45) {
+            int r = (int) (Math.random() * 3);
+            int c = (int) (Math.random() * 3);
+            if (cellY[r][c] == 0 && n != cell1x1[r][c] && n != cell3x3[r][c]) {
+                appendCell(r, c, n, cellY);
+                sum = cellSum(cellY);
+                n++;
+            }
+        }
+        printer(cellY);
+        return cellY;
     }
 
 }
