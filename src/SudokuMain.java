@@ -14,12 +14,20 @@ public class SudokuMain {
         cellMakerDiagonal(cell3x3);
         System.out.println("base test");
         basemaker(base, cell1x1, cell2x2, cell3x3);
+        System.out.println("rest test");
+        cellMakerRest(base);
+        System.out.println("top right: ");
+        //cellMakerCorns(cell1x3);
+        System.out.println("bottom left");
+        //cellMakerCorns(cell3x1);
     }
 
     int [][] base = new int[9][9];
     int [][] cell1x1 = new int[3][3];
     int [][] cell2x2 = new int[3][3];
     int [][] cell3x3 = new int[3][3];
+    int [][] cell1x3 = new int[3][3];
+    int [][] cell3x1 = new int[3][3];
 
     public void printer(int [][] cellX){
         for(int r = 0; r < cellX.length; r++){
@@ -84,7 +92,21 @@ public class SudokuMain {
         return base;
     }
 
-    public int [][] cellMaker1x3(int [][] cellY){
+    public int [][] cellMakerRest(int [][] bigCell){
+        for(int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                int n = bigCell[r][c];
+                if (n == 0) {
+                    n = (int) (Math.random() * 9 + 1);
+                    appendCell(r, c, n, base);
+                }
+            }
+        }
+        printer(bigCell);
+        return bigCell;
+    }
+
+    /*public int [][] cellMakerBottomLeft(int [][] cellY){
         int sum = cellSum(cellY);
         int n = 1;
         while (sum != 45) {
@@ -98,6 +120,6 @@ public class SudokuMain {
         }
         printer(cellY);
         return cellY;
-    }
+    }*/
 
 }
