@@ -15,7 +15,9 @@ public class SudokuMain {
         System.out.println("base test");
         basemaker(base, cell1x1, cell2x2, cell3x3);
         System.out.println("rest test");
-        cellMakerRest(base);
+        while (baseSum(base) != 405) {
+            cellMakerRest(base);
+        }
         System.out.println("top right: ");
         //cellMakerCorns(cell1x3);
         System.out.println("bottom left");
@@ -43,6 +45,16 @@ public class SudokuMain {
         for(int r = 0; r < 3; r++){
             for(int c = 0; c < 3; c++){
                 sum += cellX[r][c];
+            }
+        }
+        return sum;
+    }
+
+    public int baseSum(int [][] baseX){
+        int sum = 0;
+        for(int r = 0; r < 9; r++){
+            for(int c = 0; c < 9; c++){
+                sum += baseX[r][c];
             }
         }
         return sum;
@@ -92,14 +104,49 @@ public class SudokuMain {
         return base;
     }
 
+    public boolean checkRowCol(int n, int r, int c, int [][] bigCell, boolean add) {
+        //boolean add = false;
+        while (!add){
+            for (int tester = 0; tester < 9; tester++) {
+                if (n != bigCell[r][tester] && n != bigCell[tester][c]) {
+                    //appendCell(n, r, c, base);
+                    add = true;
+                } else {
+                    //n = 0;
+                    add = false;
+                }
+            }
+        }
+        return add;
+    }
+
+    public void checkN(int n, int r, int c, int [][] bigCell){
+        boolean add = false;
+        if (n == 0) {
+            n = (int) (Math.random() * 9 + 1);
+            while (!add){
+                for (int tester = 0; tester < 9; tester++) {
+                    if (n != bigCell[r][tester] && n != bigCell[tester][c]) {
+                        //appendCell(n, r, c, base);
+                        add = true;
+                    } else {
+                        //n = 0;
+                        add = false;
+                    }
+                }
+            } if (add) {
+                appendCell(n,r, c, base);
+            } if (!add){
+                n = 0;
+            }
+        }
+    }
+
     public int [][] cellMakerRest(int [][] bigCell){
-        for(int r = 0; r < 9; r++) {
+        for (int r = 0; r < 9; r++) {
             for (int c = 0; c < 9; c++) {
                 int n = bigCell[r][c];
-                if (n == 0) {
-                    n = (int) (Math.random() * 9 + 1);
-                    appendCell(r, c, n, base);
-                }
+                checkN(n, r, c, bigCell);
             }
         }
         printer(bigCell);
