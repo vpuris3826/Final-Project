@@ -1,5 +1,7 @@
 //import java.text.*;
 
+import java.util.Arrays;
+
 public class SudokuMain {
     public static void main(String[] args) {
         new SudokuMain();
@@ -16,7 +18,7 @@ public class SudokuMain {
         basemaker(base, cell1x1, cell2x2, cell3x3);
         System.out.println("rest test");
         while (baseSum(base) != 405) {
-            cellMakerRest(base);
+            //cellMakerRest(base);
         }
         System.out.println("top right: ");
         //cellMakerCorns(cell1x3);
@@ -104,7 +106,60 @@ public class SudokuMain {
         return base;
     }
 
-    public boolean checkRowCol(int n, int r, int c, int [][] bigCell, boolean add) {
+    public int[][] tryRest(int [][] bigCell){
+        for (int r = 0; r < 9; r++) {
+            for (int c = 0; c < 9; c++) {
+                //int n = bigCell[r][c];
+            }
+        }
+        printer(bigCell);
+        return bigCell;
+    }
+
+    public int[] testRows(int c, int [][] bigCell){
+        int[] rowTest = new int[9];
+        for (int r = 0; r < 9; r++){
+            if (bigCell[r][c] != 0){
+                rowTest[r] = bigCell[r][c];
+            }
+            System.out.println(Arrays.toString(rowTest));
+        }
+        return rowTest;
+    }
+
+    public int[] testCols(int r, int [][] bigCell){
+        int[] colTest = new int[9];
+        for (int c = 0; c < 9; c++){
+            if (bigCell[r][c] != 0){
+                colTest[c] = bigCell[r][c];
+            }
+            System.out.println(Arrays.toString(colTest));
+        }
+        return colTest;
+    }
+
+    public int crossCheck(int [] rowTest, int [] colTest){
+        int n = (int) (Math.random() * 9) + 1;
+        for (int i = 0; i < 9; i++){
+
+        }
+        return n;
+    }
+
+    public void testTestCols(int n, int i, int [] colTest){
+        if (n == colTest[i]){
+
+        }
+    }
+
+    public void tryTest(int r, int c, int [][] bigCell){
+        if (bigCell[r][c] == 0){
+            testRows;
+            testCols;
+        }
+    }
+
+    /*public boolean checkRowCol(int n, int r, int c, int [][] bigCell, boolean add) {
         //boolean add = false;
         while (!add){
             for (int tester = 0; tester < 9; tester++) {
@@ -151,7 +206,7 @@ public class SudokuMain {
         }
         printer(bigCell);
         return bigCell;
-    }
+    }*/
 
     /*public int [][] cellMakerBottomLeft(int [][] cellY){
         int sum = cellSum(cellY);
