@@ -17,12 +17,10 @@ public class SudokuMain {
         System.out.println("base test");
         basemaker(base, cell1x1, cell2x2, cell3x3);
         System.out.println("rest test");
-        while (baseSum(base) != 405) {
-            //cellMakerRest(base);
-        }
-        System.out.println("top right: ");
+        tryRest(base);
+        //System.out.println("top right: ");
         //cellMakerCorns(cell1x3);
-        System.out.println("bottom left");
+        //System.out.println("bottom left");
         //cellMakerCorns(cell3x1);
     }
 
@@ -30,8 +28,10 @@ public class SudokuMain {
     int [][] cell1x1 = new int[3][3];
     int [][] cell2x2 = new int[3][3];
     int [][] cell3x3 = new int[3][3];
-    int [][] cell1x3 = new int[3][3];
-    int [][] cell3x1 = new int[3][3];
+    int[] allTest = new int[9];
+    int[] outOfNine = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    //int [][] cell1x3 = new int[3][3];
+    //int [][] cell3x1 = new int[3][3];
 
     public void printer(int [][] cellX){
         for(int r = 0; r < cellX.length; r++){
@@ -109,15 +109,18 @@ public class SudokuMain {
     public int[][] tryRest(int [][] bigCell){
         for (int r = 0; r < 9; r++) {
             for (int c = 0; c < 9; c++) {
-                //int n = bigCell[r][c];
+                if (bigCell[r][c] == 0){
+                    testAllTwo(c, r, bigCell, allTest);
+                    addNum(r, c, bigCell, allTest, outOfNine);
+                }
             }
         }
         printer(bigCell);
         return bigCell;
     }
 
-    public int[] testRows(int c, int [][] bigCell){
-        int[] rowTest = new int[9];
+    //figure out what numbers are already in row
+    /*public int[] testRows(int c, int [][] bigCell, int [] rowTest){
         for (int r = 0; r < 9; r++){
             if (bigCell[r][c] != 0){
                 rowTest[r] = bigCell[r][c];
@@ -127,8 +130,8 @@ public class SudokuMain {
         return rowTest;
     }
 
-    public int[] testCols(int r, int [][] bigCell){
-        int[] colTest = new int[9];
+    //figure out what numbers are already in col
+    public int[] testCols(int r, int [][] bigCell, int [] colTest){
         for (int c = 0; c < 9; c++){
             if (bigCell[r][c] != 0){
                 colTest[c] = bigCell[r][c];
@@ -136,28 +139,118 @@ public class SudokuMain {
             System.out.println(Arrays.toString(colTest));
         }
         return colTest;
+    }*/
+
+    //figure out what numbers could go in
+    /*public int[] testAll(int c, int r, int [][] bigCell, int [] allTest){
+        int i = 0;
+        for (int cc = 0; cc < 9; cc++){
+            if (bigCell[r][cc] != 0){
+                allTest[i] = bigCell[r][cc];
+            }
+        }
+        for (int rr = 0; rr < 9; rr++){
+            if (bigCell[rr][c] != 0){
+                allTest[i] = bigCell[rr][c];
+            }
+        }
+        i++;
+        System.out.println("Printing allTest:");
+        System.out.println(Arrays.toString(allTest));
+        return allTest;
+    }*/
+
+    public int[] testAllTwo(int c, int r, int [][] bigCell, int [] allTest){
+        int [] outOfNine = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        for (int cc = 0; cc < 9; cc++){
+            if (bigCell[r][cc] != 0){
+                for (int i = 0; i < 9; i++){
+                    if (bigCell[r][cc] == outOfNine[i]){
+                        outOfNine[i] = 0;
+                    }
+                }
+                System.out.println("Printing allTest:");
+                System.out.println(Arrays.toString(outOfNine));
+            }
+        }
+        for (int rr = 0; rr < 9; rr++){
+            if (bigCell[rr][c] != 0){
+                for (int i = 0; i < 9; i++){
+                    if (bigCell[rr][c] == outOfNine[i]){
+                        outOfNine[i] = 0;
+                    }
+                }
+                System.out.println("Printing allTest:");
+                System.out.println(Arrays.toString(outOfNine));
+            }
+        }
+        return outOfNine;
     }
 
-    public int crossCheck(int [] rowTest, int [] colTest){
-        int n = (int) (Math.random() * 9) + 1;
+    //figure out what numbers could be added
+    public void addNum(int r, int c, int [][] bigCell, int [] allTest, int [] outOfNine){
+        //int [] outOfNine = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        int n = 0;
         for (int i = 0; i < 9; i++){
+            for (int j =0; j < 9; j++) {
+                if (outOfNine[j] == allTest[i]) {
+                    outOfNine[j] = 0;
+                }
+            }
+        }
+        System.out.println("Printing all possible numbers");
+        System.out.println(Arrays.toString(outOfNine));
+        for (int k = 0; k < 9; k++) {
+            if (outOfNine[k] != 0) {
+                n = outOfNine[k];
+            }
+        }
+        appendCell(r, c, n, bigCell);
+    }
 
+    /*public int crossCheck(int [] rowTest, int [] colTest){
+        int n = -1;
+        int numsGood = 0;
+        boolean add = true;
+        while (numsGood < 9 && !add) {
+            n = (int) (Math.random() * 9) + 1;
+            for (int i = 0; i < 9; i++) {
+                if (n != colTest[i] && n != rowTest[i]){
+                    numsGood++;
+                } else if (n == colTest[i] || n == rowTest[i]){
+                    add = false;
+                }
+            }
         }
         return n;
-    }
+    }*/
 
-    public void testTestCols(int n, int i, int [] colTest){
+    /*public void testTestCols(int n, int i, int [] colTest, int [] rowTest){
         if (n == colTest[i]){
-
+            crossCheck(rowTest, colTest);
+        } else {
+            testTestRows(n, i, rowTest, colTest);
         }
     }
 
-    public void tryTest(int r, int c, int [][] bigCell){
+    public void testTestRows(int n, int i, int [] rowTest, int [] colTest){
+        if (n == rowTest[i]){
+            crossCheck(rowTest, colTest);
+        }
+    }*/
+
+    /*public void tryTest(int r, int c, int [][] bigCell){
         if (bigCell[r][c] == 0){
-            testRows;
-            testCols;
+            //int[] colTest = new int[9];
+            //int[] rowTest = new int[9];
+            int[] allTest = new int[9];
+            //testRows(c, bigCell, rowTest);
+            //testCols(r, bigCell, colTest);
+            testAll(c, r, bigCell, allTest);
+            //crossCheck(rowTest, colTest);
+            addNum(r, c, bigCell, allTest);
         }
-    }
+    }*/
 
     /*public boolean checkRowCol(int n, int r, int c, int [][] bigCell, boolean add) {
         //boolean add = false;
