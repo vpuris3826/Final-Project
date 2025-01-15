@@ -144,8 +144,69 @@ public class SudokuMain {
             }
         }
 
-        testSubCell(r, c, bigCell);
-        arrayCrossTest(outOfNine, subCellTest);
+        int rowNum;
+        int colNum;
+        int rowMin;
+        int colMin;
+        if (r < 3){
+            rowNum = 3;
+            rowMin = 0;
+            if (c < 3){
+                colNum = 3;
+                colMin = 0;
+            } else if (c < 6){
+                colNum = 6;
+                colMin = 3;
+            } else {
+                colNum = 9;
+                colMin = 6;
+            }
+        } else if (r < 6){
+            rowNum = 6;
+            rowMin = 3;
+            if (c < 3){
+                colNum = 3;
+                colMin = 0;
+            } else if (c < 6){
+                colNum = 6;
+                colMin = 3;
+            } else {
+                colNum = 9;
+                colMin = 6;
+            }
+        } else {
+            rowNum = 9;
+            rowMin = 6;
+            if (c < 3){
+                colNum = 3;
+                colMin = 0;
+            } else if (c < 6){
+                colNum = 6;
+                colMin = 3;
+            } else {
+                colNum = 9;
+                colMin = 6;
+            }
+        }
+
+        for (int rr = rowMin; rr < rowNum; rr++){
+            for (int cc = colMin; cc < colNum; cc++){
+                if (bigCell[rr][cc] != 0){
+                    for (int i = 0; i < 9; i++){
+                        if (bigCell[rr][c] == outOfNine[i]){
+                            outOfNine[i] = 0;
+                        }
+                    }
+                }
+                System.out.println("Printing allTest testSubCell:");
+                System.out.println(Arrays.toString(outOfNine));
+            }
+        }
+
+        /*int[] subCellTest = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+        testSubCell(r, c, bigCell, subCellTest);
+
+        arrayCrossTest(outOfNine, subCellTest);*/
 
         System.out.println("Test outOfNine");
         System.out.println(Arrays.toString(outOfNine));
@@ -153,8 +214,7 @@ public class SudokuMain {
         return outOfNine;
     }
 
-    public int[] testSubCell(int r, int c, int [][] bigCell){
-        int[] subCellTest = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    public int[] testSubCell(int r, int c, int [][] bigCell, int [] subCellTest){
         int rowNum;
         int colNum;
         int rowMin;
@@ -222,6 +282,8 @@ public class SudokuMain {
             if (outOfNine[i] != subCellTest[i]){
                 outOfNine[i] = 0;
             }
+            System.out.println("arrayCrossTest test: ");
+            System.out.println(Arrays.toString(outOfNine));
         }
         return outOfNine;
     }
