@@ -119,6 +119,15 @@ public class SudokuMain {
         return bigCell;
     }
 
+    public int[][] indivCellFill(int [][] bigCell, int i, int j){
+        for (int r = i; r < i + 3; r++){
+            for (int c = j; c < j + 3; j++){
+                testRowCol(bigCell[r][c]);
+            }
+        }
+        return bigCell;
+    }
+
     public int[] testRowCol(int c, int r, int [][] bigCell){
         int [] outOfNine = {1, 2, 3, 4, 5, 6, 7, 8, 9};
         for (int cc = 0; cc < 9; cc++){
