@@ -1,8 +1,12 @@
 //import java.text.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class SudokuMain {
+
+    static ArrayList<Integer> nums = new ArrayList<Integer>();
+
     public static void main(String[] args) {
         new SudokuMain();
     }
@@ -107,11 +111,14 @@ public class SudokuMain {
     }
 
     public int[][] tryRest(int [][] bigCell){
-        for (int r = 0; r < 9; r++) {
-            for (int c = 0; c < 9; c++) {
-                if (bigCell[r][c] == 0){
-                    testRowCol(c, r, bigCell);
-                    //addNum(r, c, bigCell, allTest);
+        for (int n = 1; n <= 9; n++) {
+            for (int r = 0; r < 9; r++) {
+                for (int c = 0; c < 9; c++) {
+                    if (bigCell[r][c] == 0) {
+                        //testRowCol(c, r, bigCell);
+                        //addNum(r, c, bigCell, allTest);
+                        adder(c, r, bigCell, n);
+                    }
                 }
             }
         }
@@ -119,13 +126,96 @@ public class SudokuMain {
         return bigCell;
     }
 
-    public int[][] indivCellFill(int [][] bigCell, int i, int j){
+    /*public int[][] indivCellFill(int [][] bigCell, int i, int j){
         for (int r = i; r < i + 3; r++){
             for (int c = j; c < j + 3; j++){
                 testRowCol(bigCell[r][c]);
             }
         }
         return bigCell;
+    }*/
+
+    public void adder(int c, int r, int [][] bigCell, int n){
+        if (colChecker(r, n, bigCell) && rowChecker(c, n, bigCell) && cellChecker(r, c, n, bigCell)){
+            bigCell[r][c] = n;
+        }
+    }
+
+    public boolean colChecker(int r, int n, int [][] bigCell){
+        boolean numWorkCol = true;
+        for (int cc = 0; cc < 9; cc++){
+            if (bigCell[r][cc] == n){
+                numWorkCol = false;
+            }
+        }
+        return numWorkCol;
+    }
+
+    public boolean rowChecker(int c, int n, int [][] bigCell){
+        boolean numWorkRow = true;
+        for (int rr = 0; rr < 9; rr++){
+            if (bigCell[rr][c] == n){
+                numWorkRow = false;
+            }
+        }
+        return numWorkRow;
+    }
+
+    public boolean cellChecker(int r, int c, int n, int [][] bigCell){
+        boolean numWorkCell = true;
+        int rowNum;
+        int colNum;
+        int rowMin;
+        int colMin;
+        if (r < 3){
+            rowNum = 3;
+            rowMin = 0;
+            if (c < 3){
+                colNum = 3;
+                colMin = 0;
+            } else if (c < 6){
+                colNum = 6;
+                colMin = 3;
+            } else {
+                colNum = 9;
+                colMin = 6;
+            }
+        } else if (r < 6){
+            rowNum = 6;
+            rowMin = 3;
+            if (c < 3){
+                colNum = 3;
+                colMin = 0;
+            } else if (c < 6){
+                colNum = 6;
+                colMin = 3;
+            } else {
+                colNum = 9;
+                colMin = 6;
+            }
+        } else {
+            rowNum = 9;
+            rowMin = 6;
+            if (c < 3){
+                colNum = 3;
+                colMin = 0;
+            } else if (c < 6){
+                colNum = 6;
+                colMin = 3;
+            } else {
+                colNum = 9;
+                colMin = 6;
+            }
+        }
+
+        for (int rr = rowMin; rr < rowNum; rr++){
+            for (int cc = colMin; cc < colNum; cc++){
+                if (bigCell[rr][cc] == n){
+                    numWorkCell = false;
+                }
+            }
+        }
+        return numWorkCell;
     }
 
     public int[] testRowCol(int c, int r, int [][] bigCell){
