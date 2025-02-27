@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 public class SudokuMain {
 
-    static ArrayList<Integer> nums = new ArrayList<Integer>();
+    //static ArrayList<Integer> nums = new ArrayList<Integer>();
 
     public static void main(String[] args) {
         new SudokuMain();
@@ -56,10 +56,10 @@ public class SudokuMain {
         return sum;
     }
 
-    public int baseSum(int [][] baseX){
+    public int baseSum(int rStart, int rEnd, int cStart, int cEnd, int [][] baseX){
         int sum = 0;
-        for(int r = 0; r < 9; r++){
-            for(int c = 0; c < 9; c++){
+        for(int r = rStart; r < rEnd; r++){
+            for(int c = cStart; c < cEnd; c++){
                 sum += baseX[r][c];
             }
         }
@@ -111,33 +111,35 @@ public class SudokuMain {
     }
 
     public int[][] tryRest(int [][] bigCell){
-        for (int n = 1; n <= 9; n++) {
+        ArrayList<Integer> nums = new ArrayList<Integer>();
+        for (int adder = 1; adder < 10; adder++)
+        for (int j = 1; j <= 9; j++) {
+            //why is this going out of bounds?
+            System.out.println(nums.size());
+            int n = (int) (Math.random() * nums.size());
+            System.out.println(n); //why is this only printing 0?
+            int i = nums.get(n); //used to just have nums.remove(n) here
+            nums.remove(n);
             for (int r = 0; r < 9; r++) {
                 for (int c = 0; c < 9; c++) {
                     if (bigCell[r][c] == 0) {
-                        //testRowCol(c, r, bigCell);
-                        //addNum(r, c, bigCell, allTest);
-                        adder(c, r, bigCell, n);
+                        adder(c, r, bigCell, i);
+                        //System.out.println((r+1)*(c+1));
+                        //printer(bigCell);
                     }
                 }
             }
         }
+        System.out.println("test fin");
         printer(bigCell);
         return bigCell;
     }
 
-    /*public int[][] indivCellFill(int [][] bigCell, int i, int j){
-        for (int r = i; r < i + 3; r++){
-            for (int c = j; c < j + 3; j++){
-                testRowCol(bigCell[r][c]);
-            }
-        }
-        return bigCell;
-    }*/
-
     public void adder(int c, int r, int [][] bigCell, int n){
         if (colChecker(r, n, bigCell) && rowChecker(c, n, bigCell) && cellChecker(r, c, n, bigCell)){
             bigCell[r][c] = n;
+            System.out.println((r+1)*(c+1));
+            printer(bigCell);
         }
     }
 
@@ -216,188 +218,6 @@ public class SudokuMain {
             }
         }
         return numWorkCell;
-    }
-
-    public int[] testRowCol(int c, int r, int [][] bigCell){
-        int [] outOfNine = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-        for (int cc = 0; cc < 9; cc++){
-            if (bigCell[r][cc] != 0){
-                for (int i = 0; i < 9; i++){
-                    if (bigCell[r][cc] == outOfNine[i]){
-                        outOfNine[i] = 0;
-                    }
-                }
-                System.out.println("Printing allTest testRowCol:");
-                System.out.println(Arrays.toString(outOfNine));
-            }
-        }
-        for (int rr = 0; rr < 9; rr++){
-            if (bigCell[rr][c] != 0){
-                for (int i = 0; i < 9; i++){
-                    if (bigCell[rr][c] == outOfNine[i]){
-                        outOfNine[i] = 0;
-                    }
-                }
-                System.out.println("Printing allTest testRowCol:");
-                System.out.println(Arrays.toString(outOfNine));
-            }
-        }
-
-        int rowNum;
-        int colNum;
-        int rowMin;
-        int colMin;
-        if (r < 3){
-            rowNum = 3;
-            rowMin = 0;
-            if (c < 3){
-                colNum = 3;
-                colMin = 0;
-            } else if (c < 6){
-                colNum = 6;
-                colMin = 3;
-            } else {
-                colNum = 9;
-                colMin = 6;
-            }
-        } else if (r < 6){
-            rowNum = 6;
-            rowMin = 3;
-            if (c < 3){
-                colNum = 3;
-                colMin = 0;
-            } else if (c < 6){
-                colNum = 6;
-                colMin = 3;
-            } else {
-                colNum = 9;
-                colMin = 6;
-            }
-        } else {
-            rowNum = 9;
-            rowMin = 6;
-            if (c < 3){
-                colNum = 3;
-                colMin = 0;
-            } else if (c < 6){
-                colNum = 6;
-                colMin = 3;
-            } else {
-                colNum = 9;
-                colMin = 6;
-            }
-        }
-
-        for (int rr = rowMin; rr < rowNum; rr++){
-            for (int cc = colMin; cc < colNum; cc++){
-                if (bigCell[rr][cc] != 0){
-                    for (int i = 0; i < 9; i++){
-                        if (bigCell[rr][c] == outOfNine[i]){
-                            outOfNine[i] = 0;
-                        }
-                    }
-                }
-                System.out.println("Printing allTest testSubCell:");
-                System.out.println(Arrays.toString(outOfNine));
-            }
-        }
-
-        /*int[] subCellTest = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-        testSubCell(r, c, bigCell, subCellTest);
-
-        arrayCrossTest(outOfNine, subCellTest);*/
-
-        System.out.println("Test outOfNine");
-        System.out.println(Arrays.toString(outOfNine));
-        addNum(r, c, bigCell, outOfNine);
-        return outOfNine;
-    }
-
-    public int[] testSubCell(int r, int c, int [][] bigCell, int [] subCellTest){
-        int rowNum;
-        int colNum;
-        int rowMin;
-        int colMin;
-        if (r < 3){
-            rowNum = 3;
-            rowMin = 0;
-            if (c < 3){
-                colNum = 3;
-                colMin = 0;
-            } else if (c < 6){
-                colNum = 6;
-                colMin = 3;
-            } else {
-                colNum = 9;
-                colMin = 6;
-            }
-        } else if (r < 6){
-            rowNum = 6;
-            rowMin = 3;
-            if (c < 3){
-                colNum = 3;
-                colMin = 0;
-            } else if (c < 6){
-                colNum = 6;
-                colMin = 3;
-            } else {
-                colNum = 9;
-                colMin = 6;
-            }
-        } else {
-            rowNum = 9;
-            rowMin = 6;
-            if (c < 3){
-                colNum = 3;
-                colMin = 0;
-            } else if (c < 6){
-                colNum = 6;
-                colMin = 3;
-            } else {
-                colNum = 9;
-                colMin = 6;
-            }
-        }
-
-        for (int rr = rowMin; rr < rowNum; rr++){
-            for (int cc = colMin; cc < colNum; cc++){
-                if (bigCell[rr][cc] != 0){
-                    for (int i = 0; i < 9; i++){
-                        if (bigCell[rr][c] == subCellTest[i]){
-                            subCellTest[i] = 0;
-                        }
-                    }
-                }
-                System.out.println("Printing allTest testSubCell:");
-                System.out.println(Arrays.toString(subCellTest));
-            }
-        }
-
-        return subCellTest;
-    }
-
-    public int[] arrayCrossTest(int [] outOfNine, int [] subCellTest){
-        for (int i = 0; i < 9; i++){
-            if (outOfNine[i] != subCellTest[i]){
-                outOfNine[i] = 0;
-            }
-            System.out.println("arrayCrossTest test: ");
-            System.out.println(Arrays.toString(outOfNine));
-        }
-        return outOfNine;
-    }
-
-    //figure out what numbers could be added
-    public void addNum(int r, int c, int [][] bigCell, int [] outOfNine){
-        int n = 0;
-        System.out.println("Printing all possible numbers");
-        System.out.println(Arrays.toString(outOfNine));
-        for (int k = 0; k < 9; k++) {
-            if (outOfNine[k] != 0) {
-                n = outOfNine[k];
-            }
-        }
-        appendCell(r, c, n, bigCell);
     }
 
 }
