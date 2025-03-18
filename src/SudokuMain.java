@@ -112,20 +112,21 @@ public class SudokuMain {
 
     public int[][] tryRest(int [][] bigCell){
         ArrayList<Integer> nums = new ArrayList<Integer>();
-        for (int adder = 1; adder < 10; adder++)
-        for (int j = 1; j <= 9; j++) {
-            //why is this going out of bounds?
-            System.out.println(nums.size());
-            int n = (int) (Math.random() * nums.size());
-            System.out.println(n); //why is this only printing 0?
-            int i = nums.get(n); //used to just have nums.remove(n) here
-            nums.remove(n);
-            for (int r = 0; r < 9; r++) {
-                for (int c = 0; c < 9; c++) {
-                    if (bigCell[r][c] == 0) {
-                        adder(c, r, bigCell, i);
-                        //System.out.println((r+1)*(c+1));
-                        //printer(bigCell);
+        for (int adder = 1; adder <= 9; adder++) {
+            for (int j = 1; j <= 9; j++) {
+                //why is this going out of bounds?
+                System.out.println(nums.size());
+                int n = (int) (Math.random() * nums.size());
+                System.out.println(n); //why is this only printing 0?
+                int i = nums.get(n); //used to just have nums.remove(n) here
+                nums.remove(n);
+                for (int r = 0; r < 9; r++) {
+                    for (int c = 0; c < 9; c++) {
+                        if (bigCell[r][c] == 0) {
+                            adder(c, r, bigCell, i);
+                            //System.out.println((r+1)*(c+1));
+                            //printer(bigCell);
+                        }
                     }
                 }
             }
