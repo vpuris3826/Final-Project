@@ -11,7 +11,12 @@ public class Sudoku2 {
     public Sudoku2(){
         printer(base);
         System.out.println();
-        makePuzzle(base);
+        int numAdd = 1;
+        for (int n = 0; n < 9; n++){
+            nums.add(numAdd);
+            numAdd++;
+        }
+        makePuzzle();
         printer(base);
     }
 
@@ -24,40 +29,61 @@ public class Sudoku2 {
         }
     }
 
-    public void makePuzzle(int [][] cell){
-        int numAdd = 1;
-        for (int n = 0; n < 9; n++){
-            nums.add(numAdd);
-            numAdd++;
+    public int baseSum(){
+        int sum = 0;
+        for(int r = 0; r < 9; r++){
+            for(int c = 0; c < 9; c++){
+                sum += base[r][c];
+            }
         }
-        for (int n = 1; n <= 9; n++){
-            int numTemp = (int) (Math.random() * nums.size());
-            System.out.println("num generated: " + numTemp);
-            System.out.println("num added: " + nums.get(numTemp));
-            int numSave = nums.remove(numTemp);
-            for (int r = 0; r < 9; r++){
-                //System.out.println("for r tester: " + n);
-                for (int c = 0; c < 9; c++){
-                    //System.out.println("for c tester: " + n);
-                    canAdd(numSave, r, c);
-                    //System.out.println(canAdd(numSave, r, c))
+        return sum;
+    }
+
+    public void makePuzzle(/*int [][] cell*/){
+        for (int r = 0; r < 9; r++){
+            for (int c = 0; c < 9; c++){
+                if (base[r][c] == 0){
+                    //figure out what's happening here? why won't it keep going?
+                    //ArrayList<Integer> break = new ArrayList<Integer> nums;
+                    int numSave = (int) (Math.random() * 9 + 1);
+                    int tryNum = 1;
+                    if(!canAdd(numSave, r, c)){
+                        while(!canAdd(numSave, r, c)){
+                            numSave = (int) (Math.random() * 9 + 1);
+                            tryNum++;
+                            if (tryNum > 81 && r > 0){
+                                r--;
+                                //c--;
+                            } else if (81 < tryNum && c > 0){
+                                c--;
+                            } else {
+                                c = 0;
+                                r = 0;
+                            }
+                            //System.out.println("num test: " + numSave);
+                        }
+                    }
+                    printer(base);
+                    System.out.println();
                 }
             }
         }
     }
 
-    public void canAdd(int n, int r, int c){
-        //System.out.println(canRow(n, c));
-        //System.out.println(canCol(n, r));
-        //System.out.println(canCell(n, r, c));
+    public boolean canAdd(int n, int r, int c){
+        //System.out.println(c);
         if (canRow(n, c) && canCol(n, r) && canCell(n, r, c)){
+            //System.out.println("test after enter: " + canCell(n, r, c));
+            //System.out.println("try 2: r - " + r + " c - " + c);
             base[r][c] = n;
+            return true;
         }
-        //return false;
+        return false;
     }
 
     public boolean canRow(int n, int c){
         for (int row = 0; row < 9; row ++){
+            //why is this part out of bounds??
             if (base[row][c] == n){
                 return false;
             }
@@ -75,9 +101,54 @@ public class Sudoku2 {
     }
 
     public boolean canCell(int n, int r, int c){
-        for (int row = r % 3; row < 3 - (r % 3); row++){
-            for (int col = c % 3; col < 3 - (c % 3); col++){
-                if (base[row][col] == n){
+        int rowMax;
+        int colMax;
+        int rowMin;
+        int colMin;
+        if (r < 3){
+            rowMax = 3;
+            rowMin = 0;
+            if (c < 3){
+                colMax = 3;
+                colMin = 0;
+            } else if (c < 6){
+                colMax = 6;
+                colMin = 3;
+            } else {
+                colMax = 9;
+                colMin = 6;
+            }
+        } else if (r < 6){
+            rowMax = 6;
+            rowMin = 3;
+            if (c < 3){
+                colMax = 3;
+                colMin = 0;
+            } else if (c < 6){
+                colMax = 6;
+                colMin = 3;
+            } else {
+                colMax = 9;
+                colMin = 6;
+            }
+        } else {
+            rowMax = 9;
+            rowMin = 6;
+            if (c < 3){
+                colMax = 3;
+                colMin = 0;
+            } else if (c < 6){
+                colMax = 6;
+                colMin = 3;
+            } else {
+                colMax = 9;
+                colMin = 6;
+            }
+        }
+
+        for (int rr = rowMin; rr < rowMax; rr++){
+            for (int cc = colMin; cc < colMax; cc++){
+                if (base[rr][cc] == n){
                     return false;
                 }
             }
