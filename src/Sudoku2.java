@@ -11,11 +11,11 @@ public class Sudoku2 {
     public Sudoku2(){
         printer(base);
         System.out.println();
-        int numAdd = 1;
+        /*int numAdd = 1;
         for (int n = 0; n < 9; n++){
             nums.add(numAdd);
             numAdd++;
-        }
+        }*/
         makePuzzle();
         printer(base);
     }
@@ -42,16 +42,30 @@ public class Sudoku2 {
     public void makePuzzle(/*int [][] cell*/){
         for (int r = 0; r < 9; r++){
             for (int c = 0; c < 9; c++){
-                if (base[r][c] == 0){
+                int numAdd = 1;
+                for (int n = 0; n < 9; n++){
+                    nums.add(numAdd);
+                    numAdd++;
+                }
+                //ArrayList<Integer> numsTemp = nums;
+                //if (base[r][c] == 0){
+                    ArrayList<Integer> numsTemp = nums;
                     //figure out what's happening here? why won't it keep going?
-                    //ArrayList<Integer> break = new ArrayList<Integer> nums;
-                    int numSave = (int) (Math.random() * 9 + 1);
-                    int tryNum = 1;
+                    //ArrayList<Integer> numsTemp = nums;
+                    int numSave = 0;
                     if(!canAdd(numSave, r, c)){
                         while(!canAdd(numSave, r, c)){
-                            numSave = (int) (Math.random() * 9 + 1);
-                            tryNum++;
-                            if (tryNum > 81 && r > 0){
+                            int numTemp = (int) (Math.random() * numsTemp.size());
+                            numSave = numsTemp.remove(numTemp);
+                            if (numsTemp.isEmpty() && r > 1){
+                                r--;
+                            }
+                            System.out.println(numSave);
+                            System.out.println(numsTemp.size());
+                            System.out.println(nums);
+                            //numSave = (int) (Math.random() * 9 + 1);
+                            //tryNum++;
+                            /*if (tryNum > 81 && r > 0){
                                 r--;
                                 //c--;
                             } else if (81 < tryNum && c > 0){
@@ -59,13 +73,13 @@ public class Sudoku2 {
                             } else {
                                 c = 0;
                                 r = 0;
-                            }
+                            }*/
                             //System.out.println("num test: " + numSave);
                         }
                     }
                     printer(base);
                     System.out.println();
-                }
+                //}
             }
         }
     }
