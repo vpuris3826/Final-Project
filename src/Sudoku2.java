@@ -16,8 +16,16 @@ public class Sudoku2 {
             nums.add(numAdd);
             numAdd++;
         }*/
-        makePuzzle();
+        //makePuzzle();
         printer(base);
+    }
+
+    public void puzzleMaker(){
+        for(int r = 0; r < 9; r++){
+            for(int c = 0; c < 9; c++){
+
+            }
+        }
     }
 
     public void printer(int [][] cell){
