@@ -1,9 +1,21 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Scanner;
 
 public class Sudoku2 {
     static int [][] base = new int[9][9];
     static int [][] baseDub = new int[9][9];
     Scanner myScanner = new Scanner(System.in);
+    /*JTextField num1Field;
+    JTextField num2Field;
+    JLabel answer;
+    JButton subtractButton;
+    JButton addButton;
+    JButton multiplyButton;
+    JButton divideButton;
+    JButton modButton;*/
 
     public static void main(String[] args) {
         new Sudoku2();
@@ -11,11 +23,19 @@ public class Sudoku2 {
 
     public Sudoku2(){
         puzzleMaker();
-        System.out.println("base: ");
+        /*System.out.println("base: ");
         printer(base);
         System.out.println("baseDub: ");
-        printer(baseDub);
+        printer(baseDub);*/
         play();
+        JFrame window = new JFrame("Sudoku");
+        window.setSize(1000, 1000);
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        window.setLayout(new GridLayout(9, 10));
+        /*num1Field = new JTextField();
+        num1Field.setFont(new Font ("SansSerif", Font.PLAIN, 42));
+        num1Field.setHorizontalAlignment(0);
+        window.setVisible(true);*/
         //printer(base);
 
     }
@@ -57,13 +77,24 @@ public class Sudoku2 {
                 System.out.println("What row would you like to move to? ");
                 myScanner.useDelimiter("\\n");
                 int row = myScanner.nextInt();
-                System.out.println("What number do you want to put there? ");
+                if (base[row-1][col-1] != 0){
+                    System.out.println("There's already a number in that spot, you can't move there!");
+                } else {
+                    System.out.println("What number do you want to put there? ");
+                    base[row - 1][col - 1] = myScanner.nextInt();
+                    printer(base);
+                    if (base[row - 1][col - 1] != baseDub[row - 1][col - 1]){
+                        System.out.println("INCORRECT!!");
+                        base[row - 1][col - 1] = 0;
+                    }
+                }
+                /*System.out.println("What number do you want to put there? ");
                 base[row - 1][col - 1] = myScanner.nextInt();
                 printer(base);
                 if (base[row - 1][col - 1] != baseDub[row - 1][col - 1]){
                     System.out.println("INCORRECT!!");
                     base[row - 1][col - 1] = 0;
-                }
+                }*/
             }
         }
     }
